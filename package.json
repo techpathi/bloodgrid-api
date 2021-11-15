@@ -1,0 +1,22 @@
+{
+  "name": "bloodgrid-api",
+  "version": "1.0.0",
+  "description": "The API component for the bloodgrid application",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "techpathi",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^4.1.4",
+    "mongoose": "^6.0.12"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
