@@ -30,6 +30,8 @@ const donorSchema = mongoose.Schema({
   }
 });
 
+donorSchema.index({ location: '2dsphere' });
+
 const Donor = (module.exports = mongoose.model('donor', donorSchema));
 
 module.exports.get = function (callback, limit) {

@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const Donor = require('../model/donorModel');
-const GEOCODING_API_KEY = '<API Key here>';
+const GEOCODING_API_KEY = 'AIzaSyCLTjHtVlRDUFuyONp1yCe1Ti_hwHS34CA'; //'<API Key here>';
 
 let donorController = {};
 
@@ -12,7 +12,10 @@ donorController.addDonor = async function (req, res) {
   donor.age = age;
   donor.gender = gender;
   donor.bloodGroup = bloodGroup;
-  donor.place = place;
+  donor.place = {
+    placeName: place.value.description,
+    placeId: place.value.place_id
+  };
   if (locationCoords !== null) {
     donor.location = {
       type: 'Point',
@@ -39,11 +42,36 @@ donorController.addDonor = async function (req, res) {
   });
 };
 
+donorController.findNearBy = function (req, res) {
+  let { locationCoords, requestedBloodGroup, distanceInKms } = req.body;
+  Donor.find({
+    location: {
+      $near: {
+        $maxDistance: distanceInKms * 1000,
+        $geometry: {
+          type: 'Point',
+          coordinates: [locationCoords.latitude, locationCoords.longitude]
+        }
+      }
+    },
+    bloodGroup: { $eq: requestedBloodGroup }
+  }).find((error, results) => {
+    if (error) console.log(error);
+    else if (results.length) {
+      res.status(200).json({
+        noOfMatches: results.length,
+        maximumDistanceInKms: distanceInKms,
+        bloodGroup: requestedBloodGroup,
+        matches: results
+      });
+    }
+  });
+};
+
 async function geoCodeThisPlace(placeId) {
-  console.log('In geocoding fetch');
   let response =
     await fetch(`https://maps.googleapis.com/maps/api/geocode/json?place_id=${placeId}
-&key=${API_KEY}`);
+&key=${GEOCODING_API_KEY}`);
   if (response.ok) {
     let jsonResponse = await response.json();
     console.log(jsonResponse);

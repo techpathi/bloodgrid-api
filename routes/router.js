@@ -6,5 +6,6 @@ router.get('/health', (req, res) => {
 });
 
 router.route('/donors').post(donorController.addDonor);
+router.route('/donors/findNearBy').post(donorController.findNearBy);
 
 module.exports = router;
