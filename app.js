@@ -5,8 +5,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const PORT = process.env.PORT || 4000;
+const DB_LOCAL_URL = 'mongodb://localhost/bloodgrid';
 
-mongoose.connect('mongodb://localhost/bloodgrid', { useNewUrlParser: true });
+mongoose.connect(DB_LOCAL_URL, { useNewUrlParser: true });
 
 let db = mongoose.connection;
 
@@ -16,11 +17,7 @@ else console.log('Connected to the db successfully');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: 'http://localhost:3000'
-  })
-);
+app.use(cors());
 
 app.use('/', router);
 

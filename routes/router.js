@@ -5,6 +5,6 @@ router.get('/health', (req, res) => {
   res.status(200).json({ message: 'All endpoints are up and running!' });
 });
 
-router.route('/donors').post(donorController.new);
+router.route('/donors').post(donorController.addDonor);
 
 module.exports = router;

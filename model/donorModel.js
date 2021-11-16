@@ -20,8 +20,9 @@ const donorSchema = mongoose.Schema({
   place: {
     type: Object
   },
-  locationCoords: {
-    type: Object
+  location: {
+    type: { type: String, default: 'Point' },
+    coordinates: { type: [Number], default: [0, 0] }
   },
   createdAt: {
     type: Date,
@@ -32,5 +33,5 @@ const donorSchema = mongoose.Schema({
 const Donor = (module.exports = mongoose.model('donor', donorSchema));
 
 module.exports.get = function (callback, limit) {
-  Contact.find(callback).limit(limit);
+  Donor.find(callback).limit(limit);
 };
